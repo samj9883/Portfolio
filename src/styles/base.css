@@ -1,115 +1,110 @@
-/* ===============================
-   Base / Design System
-   =============================== */
-
 /* Font */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap");
 
-/* CSS Reset (small, safe) */
+/* ---- Minimal Reset ---- */
 *,
 *::before,
 *::after { box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body, h1, h2, h3, h4, p, ul { margin: 0; }
-ul { padding: 0; list-style: none; }
+img { max-width: 100%; display: block; }
 button { font: inherit; }
 
-/* Color tokens from your scheme */
+/* --- Design tokens --- */
 :root {
-  --c-bg: #F9FAFB;        /* page background (light) */
-  --c-text: #111827;      /* primary text + dark bg */
-  --c-accent: #1D4ED8;    /* accent */
-  --c-muted: #374151;     /* muted grey band / lighter dark */
-  --c-card: #ffffff;      /* card bg in light */
+  /* Surface & text */
+  --c-bg: #F9FAFB;
+  --c-text: #111827;
+  --c-card: #F9FAFB;
 
+  /* Accent & neutrals */
+  --c-accent: #1D4ED8;
+  --c-on-accent: #F9FAFB;
+  --c-muted: #374151;
+
+  
+  /* Radii, shadows, motion */
   --radius: 16px;
   --radius-lg: 20px;
   --shadow-sm: 0 2px 8px rgb(0 0 0 / 8%);
   --shadow-md: 0 10px 30px rgb(0 0 0 / 12%);
   --transition: 220ms cubic-bezier(.2,.8,.2,1);
-
-  /* Derived */
-  --c-nav-pill-bg: #e8eefc;
-  --c-border: #e5e7eb;
-  --band-bg: var(--c-muted);
 }
 
 /* Dark theme overrides */
 :root[data-theme="dark"] {
-  --c-bg: #0f1420;        /* near to #111827 but a touch softer */
+  --c-bg: #0f1420;
   --c-text: #F9FAFB;
   --c-card: #111827;
-  --c-border: #1f2937;
   --c-nav-pill-bg: #0b1a3f;
-  --band-bg: #111827;     /* darker band in dark mode */
+  --band-bg: #111827;
+  
+
 }
 
-/* Base element styles */
-html { color-scheme: light dark; }
+/* Base layout */
 body {
-  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
   background: var(--c-bg);
   color: var(--c-text);
-  line-height: 1.5;
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.45;
 }
 
-/* Utilities */
 .container {
-  width: 100%;
-  max-width: 1120px;
+  width: min(1100px, 92vw);
   margin-inline: auto;
-  padding-inline: 20px;
 }
 
+/* Buttons */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
+  --_bg: var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  border: 1px solid transparent;
   padding: .7rem 1.1rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  background: var(--c-card);
-  color: var(--c-text);
-  box-shadow: var(--shadow-sm);
+  font-weight: 700;
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition), border-color var(--transition);
-  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), opacity var(--transition), background var(--transition), border-color var(--transition);
 }
-
-.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
-
-.btn-accent {
-  background: var(--c-accent);
-  color: #fff;
-}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); opacity: .9; }
+.btn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
 
 .btn-outline {
   background: transparent;
+  color: var(--c-text);
   border-color: var(--c-border);
 }
+.btn-accent { background: var(--c-accent); color: #fff; }
 
+/* Nav pills */
 .nav-pill {
-  background: var(--c-nav-pill-bg);
-  color: #fff;
-  background: linear-gradient(0deg, var(--c-accent) 0%, var(--c-accent) 0%) padding-box,
-              var(--c-nav-pill-bg) border-box;
-  border: 2px solid transparent;
-  color: #fff;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  border: 1px solid transparent;
+  font-weight: 600;
 }
 
-.link-reset {
-  color: inherit;
-  text-decoration: none;
+/* Cards */
+.card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Visually hidden (for a11y) */
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+/* Dots (used also in carousel controls) */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.6);
 }
-
-/* Smooth transitions for theme */
-* { transition: background-color var(--transition), color var(--transition), border-color var(--transition); }
+:root[data-theme="dark"] .dot {
+  background: rgba(255,255,255,.4);
+  border-color: rgba(255,255,255,.25);
+}
+.dot.is-current { background: #fff; }

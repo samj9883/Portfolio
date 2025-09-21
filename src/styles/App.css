@@ -1,0 +1,300 @@
+/* ---- Global sizing for the carousel height ---- */
+:root {
+  /* JS will override --carousel-h dynamically; this is just a fallback */
+  --carousel-h: clamp(420px, 62vh, 560px);
+  --img-min-h: 0px;
+}
+
+/* kill the default page margin */
+:where(html, body, #root) {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+/* optional belt & braces to prevent any sub-pixel creep */
+html, body { overflow-x: clip; } /* or hidden */
+
+
+/* Header */
+.app-header {
+  padding: 12px 0 8px;
+}
+.header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.brand h1 {
+  text-align: center;
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: .01em;
+  font-size: clamp(1.8rem, 6.6vw, 4rem);
+  text-transform: uppercase;
+  color: var(--c-text);
+}
+
+.name h3 {
+  color: var(--c-accent);
+  text-align: center;
+}
+.theme-toggle {
+  justify-self: end;
+}
+
+.subnav {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: .75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: .6rem;
+}
+
+/* Make pills (links and the toggle button) line up identically */
+.subnav .nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  height: 2.25rem;
+  padding: 0 .95rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  line-height: 1;           /* equal visual height across items */
+  text-decoration: none;
+}
+
+/* Keep the toggle looking like your outline button, but sized as a pill */
+.subnav .theme-pill.btn-outline {
+  background: transparent;
+  color: var(--c-text);
+  border: 1.5px solid var(--c-text, currentColor);
+}
+
+/* Optional: tiny icon alignment polish */
+.subnav .nav-pill svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+
+
+/* Band behind carousel */
+.band {
+  margin-top: 18px;
+  position: relative;         /* create new containing block */
+  isolation: isolate;         /* prevent z-index bleed into other sections */
+  background: var(--c-bg);
+}
+
+.band-inner {
+  display: grid;
+  gap: 16px;
+}
+
+/* Center content inside the message block on wide screens */
+.message {
+  background: var(--c-bg);
+  padding: 0 0 56px;
+  display: grid;              /* lets us center children cleanly */
+  justify-items: center;      /* horizontal centering of children */
+}
+
+/* Center the tagline block itself */
+.message .tagline {
+  max-width: 70ch;
+  padding: 0 20px;
+  margin: 10px auto 0;        /* <-- centers the block */
+  text-align: center;
+  color: var(--c-text);
+  font-weight: 600;
+}
+
+
+
+/* Carousel shell */
+.carousel {
+  position: relative;
+  perspective: 1200px;
+  overflow: hidden;
+  min-block-size: calc(var(--card-h, 0px) + 40px); 
+  z-index: 0;                 
+}
+
+.carousel-track {
+  position: relative;
+  display: flex;              
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  height: var(--card-h, auto);
+
+}
+
+.carousel .card {
+  background: var(--c-muted);
+  border: var(--c-muted);
+  width: min(450px, 50%);
+  margin-inline: auto;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 550ms var(--transition), opacity 550ms var(--transition), box-shadow 550ms var(--transition);
+  z-index: 1;     
+  height: var(--card-h,auto);  
+  display: flex; 
+  flex-direction: column;  
+  position: absolute;         
+  inset: 0;
+}
+
+.carousel .card.is-center {
+  color: var(--c-bg);
+  background-color: var(--c-text);
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;                 /* top within carousel only */
+  border: none; /* optional */
+  box-shadow: 0 0 0 3px var(--c-bg), var(--shadow-md);
+}
+.carousel .card.is-left {
+  color: var(--c-bg);
+  background-color: var(--c-muted);
+  transform: translateX(-28%) rotateY(8deg) scale(.9);
+  opacity: 1;
+  z-index: 1;
+}
+.carousel .card.is-right {
+  color: var(--c-bg);
+  background-color: var(--c-muted);
+  transform: translateX(28%) rotateY(-8deg) scale(.9);
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Image section gets all leftover height */
+.card-visual {
+  flex: 1 1 auto;       /* was 0 0 50% */
+  min-height: var(--img-min-h);        /* prevents overflow on small screens */
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.02));
+}
+
+/* Text section only as tall as needed */
+.card-content {
+  flex: 0 0 auto;       /* was 1 1 50% */
+  padding: 1rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image sizing inside the visual area */
+.card-visual img {
+  min-height: var(--img-min-h);
+  height: 100%;
+  width: auto;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 20px;
+  
+}
+
+/* Typography + spacing that avoids phantom gap under CTA */
+.card-content h3 {
+  font-weight: 800;
+  font-size: clamp(1.25rem, 3.4vw, 1.8rem);
+  margin: 0 0 .25rem;
+}
+.card-content p {
+  color: var(--c-muted);
+  font-weight: 500;
+  margin: 0;                 /* remove default p-margin that created the gap */
+  flex: 1 1 auto;            /* take remaining space, pushing actions down */
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-top: .6rem;         /* controlled spacing above CTA */
+}
+
+/* Measuring mode: temporarily let cards flow so we can read natural height */
+.carousel-track.is-measuring .card {
+  position: static;
+  inset: auto;
+  height: auto;
+}
+
+/* Keep dots BELOW the cards */
+.controls {
+  position: static;          /* they flow under the track */
+  display: flex;
+  justify-content: center;
+  gap: .45rem;
+  width: 100%;
+  margin: 10px 0;
+}
+.controls .dot {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+}
+
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .actions .btn { padding: .6rem .9rem; }
+  .carousel .card.is-left { transform: translateX(-20%) rotateY(6deg) scale(.92); }
+  .carousel .card.is-right { transform: translateX(20%) rotateY(-6deg) scale(.92); }
+
+  /* DO NOT override --carousel-h on mobile:
+     JS sets it dynamically based on tallest image. */
+
+  /* Card width & radius */
+  .carousel .card {
+    width: min(300px, 88vw);  /* override min(450px, 50%) so the center card isn’t too narrow */
+    border-radius: 22px;
+  }
+
+  
+  
+
+  
+
+  /* Typography tweaks */
+  .card-content h3 {
+    font-size: 1.1rem;        /* down from clamp(...) */
+    margin: 0 0 .25rem;
+    line-height: 1.1;
+  }
+  .card-content p {
+    font-size: .92rem;
+    line-height: 1.35;
+    margin: 0;
+
+   
+
+  /* Ensure readable text in the dark center card */
+  .carousel .card.is-center h3 { color: #fff; }
+
+  /* Button sizing */
+  .actions { gap: .5rem; }
+  .actions .btn {
+    padding: .5rem .9rem;
+    font-size: .95rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Smaller dots, a bit more breathing room */
+  .controls .dot { width: 9px; height: 9px; }
+}
+
+
+}

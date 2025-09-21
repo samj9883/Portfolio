@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "./styles/base.css";
-import "./App.css";
+import "./styles/App.css";
+import ScanSafe from "./assets/ScanSafe.png";
 
-/** ------------------------------
- *  Demo project data
- *  Replace image URLs with your own assets in /public if you prefer.
- *  ------------------------------ */
 type Project = {
   id: string;
   title: string;
@@ -21,8 +18,7 @@ const projects: Project[] = [
     title: "SearchSafe",
     blurb:
       "Scan product ingredients against allergy profiles to instantly see if items are safe.",
-    image:
-      "https://images.unsplash.com/photo-1556139943-4bdca53adf1e?q=80&w=1200&auto=format&fit=crop",
+    image: ScanSafe,
     cta: "Find Out More",
     href: "#searchsafe",
   },
@@ -48,49 +44,46 @@ const projects: Project[] = [
   },
 ];
 
-/** ------------------------------
- *  Theme helpers
- *  ------------------------------ */
 type Theme = "light" | "dark";
 const THEME_KEY = "site-theme";
 
 function getInitialTheme(): Theme {
-  const stored = (localStorage.getItem(THEME_KEY) as Theme | null);
+  const stored = localStorage.getItem(THEME_KEY) as Theme | null;
   if (stored === "light" || stored === "dark") return stored;
   const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
   return prefersDark ? "dark" : "light";
 }
-
 function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
-/** ------------------------------
- *  Main App
- *  ------------------------------ */
 export default function App() {
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
-  const [index, setIndex] = useState<number>(0);
-  const [isHovering, setIsHovering] = useState(false);
-  const touchStartX = useRef<number | null>(null);
-  const autoRef = useRef<number | null>(null);
+  const [index, setIndex] = useState(0);
+  const [hovering, setHovering] = useState(false);
 
-  // Apply theme on load and when changed
+  const autoRef = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+
+  /* Theme */
   useEffect(() => {
     applyTheme(theme);
-    localStorage.setItem(THEME_KEY, theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {}
   }, [theme]);
 
-  // Auto-rotate every 6s, pause on hover
+  /* Autoplay (pause on hover) */
   useEffect(() => {
-    if (isHovering) return;
+    if (hovering) return;
     stopAuto();
     autoRef.current = window.setInterval(() => {
       setIndex((i) => (i + 1) % projects.length);
-    }, 6000);
+    }, 5500);
     return stopAuto;
-  }, [isHovering]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hovering]);
   function stopAuto() {
     if (autoRef.current) {
       window.clearInterval(autoRef.current);
@@ -98,122 +91,207 @@ export default function App() {
     }
   }
 
+  /* Order helpers for left/center/right */
   const order = useMemo(() => {
-    // Return indexes for prev, active, next
-    const prev = (index - 1 + projects.length) % projects.length;
-    const next = (index + 1) % projects.length;
-    return { prev, index, next };
+    const left = (index - 1 + projects.length) % projects.length;
+    const right = (index + 1) % projects.length;
+    return { left, center: index, right };
   }, [index]);
 
   function select(i: number) {
     setIndex(i);
   }
 
+  /* Keyboard + touch */
   function onKey(e: React.KeyboardEvent) {
     if (e.key === "ArrowRight") setIndex((i) => (i + 1) % projects.length);
-    if (e.key === "ArrowLeft")
-      setIndex((i) => (i - 1 + projects.length) % projects.length);
+    if (e.key === "ArrowLeft") setIndex((i) => (i - 1 + projects.length) % projects.length);
   }
-
   function onTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
   }
   function onTouchEnd(e: React.TouchEvent) {
-    if (touchStartX.current == null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const start = touchStartX.current;
     touchStartX.current = null;
-    const threshold = 40;
-    if (dx < -threshold) setIndex((i) => (i + 1) % projects.length);
-    if (dx > threshold) setIndex((i) => (i - 1 + projects.length) % projects.length);
+    if (start == null) return;
+    const dx = e.changedTouches[0].clientX - start;
+    if (dx < -40) setIndex((i) => (i + 1) % projects.length);
+    if (dx > 40) setIndex((i) => (i - 1 + projects.length) % projects.length);
   }
+
+  useLayoutEffect(() => {
+  const track = trackRef.current;
+  if (!track) return;
+
+  let raf = 0;
+
+  const measure = () => {
+    // Let cards flow naturally while we read sizes
+    track.classList.add("is-measuring");
+
+    // 1) Tallest image on the page (rendered height)
+    let maxImgH = 0;
+    const imgs = track.querySelectorAll<HTMLImageElement>(".card-visual img");
+    imgs.forEach((img) => {
+      maxImgH = Math.max(maxImgH, img.getBoundingClientRect().height);
+    });
+    track.style.setProperty("--img-min-h", `${Math.round(maxImgH)}px`);
+
+    // 2) Tallest card (now that img min-height is applied)
+    let maxCardH = 0;
+    const cards = track.querySelectorAll<HTMLElement>(".card");
+    cards.forEach((c) => {
+      maxCardH = Math.max(maxCardH, c.scrollHeight);
+    });
+    track.style.setProperty("--card-h", `${Math.round(maxCardH)}px`);
+
+    track.classList.remove("is-measuring");
+  };
+
+  // Recompute on layout changes
+  const ro = new ResizeObserver(() => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(measure);
+  });
+  ro.observe(track);
+
+  // Recompute when any image loads
+  const imgs = Array.from(track.querySelectorAll<HTMLImageElement>(".card-visual img"));
+  const unloaders: Array<() => void> = [];
+  imgs.forEach((img) => {
+    if (img.complete) return;
+    const onLoad = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(measure); };
+    img.addEventListener("load", onLoad);
+    unloaders.push(() => img.removeEventListener("load", onLoad));
+  });
+
+  // First run
+  raf = requestAnimationFrame(measure);
+
+  return () => {
+    ro.disconnect();
+    unloaders.forEach((u) => u());
+    cancelAnimationFrame(raf);
+  };
+}, [projects, index]);
+
 
   return (
     <div className="app" onKeyDown={onKey} tabIndex={0}>
       {/* Header */}
       <header className="app-header">
         <div className="container header-grid">
-          {/* left spacer */}
           <div />
+          <div className="name">
+            <h3>Samuel Jones</h3>
+          </div>
+        </div>
+      </header>
 
+      <header className="app-header">
+        <div className="container header-grid">
+          <div />
           <div className="brand">
-            <h1>Full Stack Development</h1>
+            <h1>FULL STACK DEVELOPMENT</h1>
           </div>
 
-          {/* Theme Toggle */}
-          <div className="theme-toggle">
+          {/* subnav row */}
+          <nav className="subnav">
+            <a className="btn nav-pill" href="#skills">
+              Skills &amp; CV
+            </a>
+            <a className="btn nav-pill" href="#about">
+              About Me
+            </a>
+            <a className="btn nav-pill" href="#contact">
+              Contact
+            </a>
+
+            {/* Theme toggle acts like a pill */}
             <button
+              type="button"
+              className="btn nav-pill theme-pill btn-outline"
+              aria-label="Toggle light and dark"
               aria-pressed={theme === "dark"}
-              aria-label="Toggle light and dark theme"
-              className="btn btn-outline"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               title="Toggle theme"
             >
               {theme === "light" ? (
-                // Moon icon
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z" stroke="currentColor" strokeWidth="2" />
+                  <path
+                    d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
                 </svg>
               ) : (
-                // Sun icon
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-                  <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 6.07-1.41-1.41M8.34 8.34 6.93 6.93m10.14 0-1.41 1.41M8.34 15.66l-1.41 1.41"
-                    stroke="currentColor" strokeWidth="2" />
+                  <path
+                    d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 6.07-1.41-1.41M8.34 8.34 6.93 6.93m10.14 0-1.41 1.41M8.34 15.66l-1.41 1.41"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
                 </svg>
               )}
-              <span style={{ marginLeft: 6 }}>{theme === "light" ? "Dark" : "Light"}</span>
+              <span className="label" style={{ marginLeft: 6 }}>
+                {theme === "light" ? "Dark" : "Light"}
+              </span>
             </button>
-          </div>
-
-          {/* Subnav */}
-          <nav className="subnav">
-            <a className="btn nav-pill" href="#skills">Skills &amp; CV</a>
-            <a className="btn nav-pill" href="#about">About Me</a>
-            <a className="btn nav-pill" href="#contact">Contact</a>
           </nav>
         </div>
       </header>
 
-      {/* Band with Carousel */}
+      {/* HERO with carousel */}
       <section className="band">
         <div className="container band-inner">
           <div
             className="carousel"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            <div className="carousel-track" role="listbox" aria-label="Featured projects">
+            <div className="carousel-track" ref={trackRef} role="listbox" aria-label="Featured projects">
               {projects.map((p, i) => {
-                // Determine visual state
-                const classNames = ["card"];
-                if (i === order.index) classNames.push("is-active");
-                else if (i === order.next) classNames.push("is-next");
-                else if (i === order.prev) classNames.push("is-prev");
+                const state =
+                  i === order.center ? "is-center" :
+                  i === order.left   ? "is-left"   :
+                  i === order.right  ? "is-right"  : "";
 
                 return (
                   <article
                     key={p.id}
-                    className={classNames.join(" ")}
+                    className={`card ${state}`}
                     role="option"
                     aria-selected={i === index}
                     onClick={() => select(i)}
-                    onMouseEnter={() => setIsHovering(true)}
-                    onMouseLeave={() => setIsHovering(false)}
+                    aria-label={`${p.title}: ${p.blurb}`}
+                    tabIndex={0}
                   >
                     <div className="card-visual" aria-hidden="true">
-                      <img src={p.image} alt="" />
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        loading="lazy"
+                        decoding="async"
+                        style={{
+                          height: "100%",
+                          width: "auto",
+                          maxHeight: "100%",
+                          maxWidth: "90%",
+                          objectFit: "contain",
+                          display: "block",
+                        }}
+                      />
                     </div>
-
                     <div className="card-content">
                       <h3>{p.title}</h3>
                       <p>{p.blurb}</p>
                       <div className="actions">
-                        <a className="btn btn-accent" href={p.href}>{p.cta}</a>
-                        <button className="btn btn-outline" onClick={() => select(i)}>
-                          Make Current
-                        </button>
+                        <a className="btn btn-accent" href={p.href}>
+                          {p.cta}
+                        </a>
                       </div>
                     </div>
                   </article>
@@ -221,7 +299,6 @@ export default function App() {
               })}
             </div>
 
-            {/* Dots */}
             <div className="controls" aria-label="Project selection">
               {projects.map((_, i) => (
                 <button
@@ -233,11 +310,14 @@ export default function App() {
               ))}
             </div>
           </div>
-
-          <p className="tagline">
-            Applying for graduate software engineering and tech roles with hands-on, client-facing experience.
-          </p>
         </div>
+      </section>
+
+      {/* Message */}
+      <section className="message">
+        <p className="tagline">
+          Applying for graduate software engineering and tech jobs with skills and experience in client facing development.
+        </p>
       </section>
     </div>
   );
