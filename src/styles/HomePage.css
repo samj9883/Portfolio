@@ -260,8 +260,6 @@ html, body { overflow-x: clip; } /* or hidden */
   .card-content h3 { font-size: 1.1rem; margin: 0 0 .25rem; line-height: 1.1; }
   .card-content p  { font-size: .92rem; line-height: 1.35; margin: 0; }
 
-  .carousel .card.is-center h3 { color: #fff; }
-
   .actions { gap: .5rem; }
   .actions .btn { padding: .5rem .9rem; font-size: .95rem; box-shadow: var(--shadow-sm); }
 

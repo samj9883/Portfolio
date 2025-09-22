@@ -199,7 +199,7 @@ export default function HomePage() {   // <— renamed from App to HomePage
           {/* subnav row */}
           <nav className="subnav">
             <button className="btn nav-pill" onClick={() => navigate("/home")}>
-              Home
+              Home &amp; Portfolio
             </button>
             <button className="btn nav-pill" onClick={() => navigate("/skills")}>
               Skills &amp; CV
