@@ -79,13 +79,33 @@ body {
 }
 .btn-accent { background: var(--c-accent); color: #fff; }
 
-/* Nav pills */
-.nav-pill {
+.btn.nav-pill {
+  padding: 0.6rem 1.2rem;
+  margin: 0 0.4rem;
+  box-shadow: var(--c-text);
+  border-radius: 999px;
+  background: var(--c-text);
+  color: var(--c-bg);
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+
+.btn.nav-pill:hover { background: var(--c-accent); color: #F9FAFB;}
+
+/* Active state (by class) */
+.btn.nav-pill.active {
   background: var(--c-accent);
-  color: var(--c-on-accent);
-  border: 1px solid transparent;
+  color: #F9FAFB;
   font-weight: 600;
 }
+
+/* Also support aria-current for accessibility (works even if you forget the class) */
+.btn.nav-pill[aria-current="page"] {
+  background: var(--c-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
 
 /* Cards */
 .card {

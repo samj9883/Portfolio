@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "../styles/base.css";
 import "../styles/HomePage.css";
 import ScanSafe from "../assets/ScanSafe.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 
@@ -72,7 +72,9 @@ export default function HomePage() {   // <— renamed from App to HomePage
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const isActive = (path: string) => location.pathname === path;
 
   /* Theme */
   useEffect(() => {
@@ -177,6 +179,8 @@ export default function HomePage() {   // <— renamed from App to HomePage
     };
   }, [projects, index]);
 
+  
+
   return (
     <div className="app" onKeyDown={onKey} tabIndex={0}>
       {/* Header */}
@@ -198,18 +202,37 @@ export default function HomePage() {   // <— renamed from App to HomePage
 
           {/* subnav row */}
           <nav className="subnav">
-            <button className="btn nav-pill" onClick={() => navigate("/home")}>
-              Home &amp; Portfolio
-            </button>
-            <button className="btn nav-pill" onClick={() => navigate("/skills")}>
-              Skills &amp; CV
-            </button>
-            <button className="btn nav-pill" onClick={() => navigate("/about")}>
-              About Me
-            </button>
-            <button className="btn nav-pill" onClick={() => navigate("/contact")}>
-              Contact
-            </button>
+          <button
+            className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
+            aria-current={isActive("/home") ? "page" : undefined}
+            onClick={() => navigate("/home")}
+          >
+            Home &amp; Portfolio
+          </button>
+
+          <button
+            className={`btn nav-pill ${isActive("/skills") ? "active" : ""}`}
+            aria-current={isActive("/skills") ? "page" : undefined}
+            onClick={() => navigate("/skills")}
+          >
+            Skills &amp; CV
+          </button>
+
+          <button
+            className={`btn nav-pill ${isActive("/about") ? "active" : ""}`}
+            aria-current={isActive("/about") ? "page" : undefined}
+            onClick={() => navigate("/about")}
+          >
+            About Me
+          </button>
+
+          <button
+            className={`btn nav-pill ${isActive("/contact") ? "active" : ""}`}
+            aria-current={isActive("/contact") ? "page" : undefined}
+            onClick={() => navigate("/contact")}
+          >
+            Contact
+          </button>
 
             {/* Theme toggle */}
             <button

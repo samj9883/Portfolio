@@ -1,4 +1,4 @@
-// ContactPage.tsx
+// SkillsPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const applyTheme = (t: Theme) => {
   } catch {}
 };
 
-export default function ContactPage() {
+export default function SkillsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
@@ -37,7 +37,7 @@ export default function ContactPage() {
         <div className="container header-grid">
           <div />
           <div className="brand">
-            <h1>CONTACT</h1>
+            <h1>Skills</h1>
           </div>
 
           <nav className="subnav">

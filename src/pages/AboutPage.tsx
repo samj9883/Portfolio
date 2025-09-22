@@ -1,9 +1,8 @@
-// ContactPage.tsx
+// AboutPage.tsx
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type Theme = "light" | "dark";
-
 const THEME_KEY = "site-theme";
 
 const getInitialTheme = (): Theme => {
@@ -21,7 +20,12 @@ const applyTheme = (t: Theme) => {
 
 export default function AboutPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
+
+  // Active helper (keeps pill active on child routes too)
+  const isActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(path + "/");
 
   useEffect(() => {
     applyTheme(theme);
@@ -30,25 +34,42 @@ export default function AboutPage() {
   return (
     <div className="app">
       <header className="app-header">
-        
-
         <div className="container header-grid">
           <div />
           <div className="brand">
-            <h1>ABOUT ME</h1>
+            <h1>About</h1>
           </div>
 
           <nav className="subnav">
-            <button className="btn nav-pill" onClick={() => navigate("/home")}>
+            <button
+              className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
+              aria-current={isActive("/home") ? "page" : undefined}
+              onClick={() => navigate("/home")}
+            >
               Home &amp; Portfolio
             </button>
-            <button className="btn nav-pill" onClick={() => navigate("/skills")}>
+
+            <button
+              className={`btn nav-pill ${isActive("/skills") ? "active" : ""}`}
+              aria-current={isActive("/skills") ? "page" : undefined}
+              onClick={() => navigate("/skills")}
+            >
               Skills &amp; CV
             </button>
-            <button className="btn nav-pill" onClick={() => navigate("/about")}>
+
+            <button
+              className={`btn nav-pill ${isActive("/about") ? "active" : ""}`}
+              aria-current={isActive("/about") ? "page" : undefined}
+              onClick={() => navigate("/about")}
+            >
               About Me
             </button>
-            <button className="btn nav-pill" onClick={() => navigate("/contact")}>
+
+            <button
+              className={`btn nav-pill ${isActive("/contact") ? "active" : ""}`}
+              aria-current={isActive("/contact") ? "page" : undefined}
+              onClick={() => navigate("/contact")}
+            >
               Contact
             </button>
 
@@ -63,11 +84,7 @@ export default function AboutPage() {
             >
               {theme === "light" ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z" stroke="currentColor" strokeWidth="2" />
                 </svg>
               ) : (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
