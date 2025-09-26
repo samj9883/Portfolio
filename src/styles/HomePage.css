@@ -225,7 +225,6 @@ html, body { overflow-x: clip; } /* or hidden */
   margin-top: .6rem;         /* controlled spacing above CTA */
 }
 
-/* Measuring mode: temporarily let cards flow so we can read natural height */
 .carousel-track.is-measuring .card {
   position: static;
   inset: auto;
@@ -241,11 +240,21 @@ html, body { overflow-x: clip; } /* or hidden */
   width: 100%;
   margin: 10px 0;
 }
+.controls .dot:hover {
+  scale:1.5;
+}
+
 .controls .dot {
-  width: 10px;
+  background-color: var(--c-text);
+  width: 20px;
   height: 10px;
   cursor: pointer;
 }
+
+.controls .dot.is-current {
+  background-color: var(--c-accent);  
+}
+
 
 
 @media (max-width: 600px) {

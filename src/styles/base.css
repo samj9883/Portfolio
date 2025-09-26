@@ -60,6 +60,7 @@ body {
   --_bg: var(--c-accent);
   background: var(--c-accent);
   color: var(--c-on-accent);
+  text-decoration: none;
   border: 1px solid transparent;
   padding: .7rem 1.1rem;
   border-radius: 999px;
