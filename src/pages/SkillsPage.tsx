@@ -2,11 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
+import "../styles/skills.css";
 
-// Light/Dark animations (using the same file for now; swap the dark import later)
 import animationDataLight from "../assets/light.json";
-// TODO: replace with your dark-mode animation file when ready, e.g. "../assets/data-dark.json"
 import animationDataDark from "../assets/dark.json";
+import cvUrl from "../assets/cv.pdf";
 
 type Theme = "light" | "dark";
 const THEME_KEY = "site-theme";
@@ -24,7 +24,6 @@ const applyTheme = (t: Theme) => {
   } catch {}
 };
 
-// Optional: respect reduced-motion for accessibility
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -49,11 +48,9 @@ export default function SkillsPage() {
     applyTheme(theme);
   }, [theme]);
 
-  // Keep nav pill active on child routes too
   const isActive = (path: string) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
 
-  // Keep playback aligned with reduced-motion preference
   useEffect(() => {
     const api = lottieRef.current;
     if (!api) return;
@@ -61,24 +58,20 @@ export default function SkillsPage() {
     else api.play();
   }, [prefersReduced, theme]);
 
-  // Pick animation based on theme (both are the same file for now)
   const animationData = theme === "dark" ? animationDataDark : animationDataLight;
 
   return (
     <div className="app">
       <header className="app-header">
-        {/* Looping Lottie (no scroll control) */}
-        <section
-          style={{ display: "grid", placeItems: "center" }}
-        >
-          
+        {/* Looping Lottie */}
+        <section className="lottie-wrap">
           <Lottie
-            key={theme} // remount when theme changes so the correct file loads
+            key={theme}
             lottieRef={lottieRef}
             animationData={animationData}
             loop={!prefersReduced}
             autoplay={!prefersReduced}
-            style={{ width: "100%", height: "auto" }}
+            className="lottie-player"
           />
         </section>
 
@@ -133,14 +126,10 @@ export default function SkillsPage() {
               ) : (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-                  <path
-                    d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 6.07-1.41-1.41M8.34 8.34 6.93 6.93m10.14 0-1.41 1.41M8.34 15.66l-1.41 1.41"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
+                  <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 6.07-1.41-1.41M8.34 8.34 6.93 6.93m10.14 0-1.41 1.41M8.34 15.66l-1.41 1.41" stroke="currentColor" strokeWidth="2" />
                 </svg>
               )}
-              <span className="label" style={{ marginLeft: 6 }}>
+              <span className="label subnav-label">
                 {theme === "light" ? "Dark" : "Light"}
               </span>
             </button>
@@ -148,8 +137,28 @@ export default function SkillsPage() {
         </div>
       </header>
 
-      <main className="container" style={{ paddingBlock: "2rem" }}>
-        {/* Your page content... */}
+      {/* Embedded PDF */}
+      <main className="container skills-main">
+        <section aria-labelledby="cv-title" className="pdf-section">
+          <div className="pdf-toolbar">
+            <h2 id="cv-title" className="pdf-title">My CV</h2>
+            <a className="pdf-open-link" href={cvUrl} target="_blank" rel="noreferrer">
+              Open in new tab
+            </a>
+          </div>
+
+          <object
+            className="pdf-viewer"
+            data={cvUrl}
+            type="application/pdf"
+            width="100%"
+          >
+            <p>
+              Your browser can’t display PDFs inline.{" "}
+              <a href={cvUrl} target="_blank" rel="noreferrer">Click here to view or download the PDF.</a>
+            </p>
+          </object>
+        </section>
       </main>
     </div>
   );

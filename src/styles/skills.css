@@ -1,0 +1,68 @@
+/* Skills page styles  - C:\Users\samj9\portfolio\src\styles\skills.css */
+
+.lottie-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.lottie-player {
+  width: 100%;
+  height: auto;
+}
+
+/* Main container spacing for this page */
+.skills-main {
+  padding-block: 2rem;
+}
+
+/* PDF section layout */
+.pdf-section {
+  margin: 1rem 0;
+}
+
+.pdf-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.pdf-title {
+  margin: 0;
+}
+
+.subnav .subnav-label {
+  margin-left: 6px;
+}
+
+/* PDF viewer: responsive height based on screen size.
+   Use dynamic viewport units for mobile correctness (dvh),
+   with sensible min/max via media queries. */
+.pdf-viewer {
+  width: 100%;
+  height: 275vh;   /* fallback */
+  height: 275dvh;  /* mobile-friendly dynamic viewport */
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+  margin-top: 0.75rem;
+}
+
+/* Dark theme border */
+html[data-theme="dark"] .pdf-viewer {
+  border-color: #333;
+}
+
+/* Smaller screens: give a bit more vertical room */
+@media (max-width: 600px) {
+  .pdf-viewer {
+    height: 65vh;
+    height: 65dvh;
+  }
+}
+
+/* Larger desktops: a bit taller */
+@media (min-width: 1200px) {
+  .pdf-viewer {
+    height: 85vh;
+    height: 85dvh;
+  }
+}
