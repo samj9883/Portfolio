@@ -3,10 +3,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "../styles/base.css";
 import "../styles/HomePage.css";
 import ScanSafe from "../assets/ScanSafe.png";
+import paxDemo from "../assets/paxDemo.png";
+import webDev from "../assets/webDev.png";
+import finalYear from "../assets/finalYear.jpeg";
+
 import { useNavigate, useLocation } from "react-router-dom";
-
-
-
 
 type Project = {
   id: string;
@@ -14,7 +15,7 @@ type Project = {
   blurb: string;
   image: string;
   cta: string;
-  href: string;
+  path: string; // ← was `href`
 };
 
 const projects: Project[] = [
@@ -25,27 +26,34 @@ const projects: Project[] = [
       "Scan product ingredients against allergy profiles to instantly see if items are safe.",
     image: ScanSafe,
     cta: "Find Out More",
-    href: "#searchsafe",
+    path: "/SearchSafe", 
   },
   {
-    id: "portfolio",
-    title: "Portfolio Platform",
+    id: "pax",
+    title: "Pax Equestrian Services",
     blurb:
-      "A performant React + Vite stack with modular components, theming, and analytics.",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
-    cta: "View Case Study",
-    href: "#portfolio",
+      "Client management platform with integrated job scheduling and invoice creation functionality.",
+    image: paxDemo,
+    cta: "View Platform",
+    path: "/portfolio", // ← was '#portfolio'
   },
   {
-    id: "dashboard",
-    title: "Analytics Dashboard",
+    id: "pausedPerception",
+    title: "Web Development",
     blurb:
-      "Real-time KPIs with role-based access, RESTful APIs, and beautiful charts.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-    cta: "See Dashboard",
-    href: "#dashboard",
+      "Part time working alongside university for Paused Perception, a web development agency based in Bristol, here are some of my favoroute projects that I have worked on.",
+    image: webDev,
+    cta: "See Portfolio",
+    path: "/dashboard", // ← was '#dashboard'
+  },
+  {
+    id: "finalYear",
+    title: "Final Year Project (In Progress)",
+    blurb:
+      "My final year project for my computer science degree at Loughborough. This is an ongoing project that I am working on with the insight of industry professionals",
+    image: finalYear,
+    cta: "See Project",
+    path: "/dashboard", // ← was '#dashboard'
   },
 ];
 
@@ -179,8 +187,6 @@ export default function HomePage() {   // <— renamed from App to HomePage
     };
   }, [projects, index]);
 
-  
-
   return (
     <div className="app" onKeyDown={onKey} tabIndex={0}>
       {/* Header */}
@@ -202,37 +208,37 @@ export default function HomePage() {   // <— renamed from App to HomePage
 
           {/* subnav row */}
           <nav className="subnav">
-          <button
-            className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
-            aria-current={isActive("/home") ? "page" : undefined}
-            onClick={() => navigate("/home")}
-          >
-            Home &amp; Portfolio
-          </button>
+            <button
+              className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
+              aria-current={isActive("/home") ? "page" : undefined}
+              onClick={() => navigate("/home")}
+            >
+              Home &amp; Portfolio
+            </button>
 
-          <button
-            className={`btn nav-pill ${isActive("/skills") ? "active" : ""}`}
-            aria-current={isActive("/skills") ? "page" : undefined}
-            onClick={() => navigate("/skills")}
-          >
-            Skills &amp; CV
-          </button>
+            <button
+              className={`btn nav-pill ${isActive("/skills") ? "active" : ""}`}
+              aria-current={isActive("/skills") ? "page" : undefined}
+              onClick={() => navigate("/skills")}
+            >
+              Skills &amp; CV
+            </button>
 
-          <button
-            className={`btn nav-pill ${isActive("/about") ? "active" : ""}`}
-            aria-current={isActive("/about") ? "page" : undefined}
-            onClick={() => navigate("/about")}
-          >
-            About Me
-          </button>
+            <button
+              className={`btn nav-pill ${isActive("/about") ? "active" : ""}`}
+              aria-current={isActive("/about") ? "page" : undefined}
+              onClick={() => navigate("/about")}
+            >
+              About Me
+            </button>
 
-          <button
-            className={`btn nav-pill ${isActive("/contact") ? "active" : ""}`}
-            aria-current={isActive("/contact") ? "page" : undefined}
-            onClick={() => navigate("/contact")}
-          >
-            Contact
-          </button>
+            <button
+              className={`btn nav-pill ${isActive("/contact") ? "active" : ""}`}
+              aria-current={isActive("/contact") ? "page" : undefined}
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </button>
 
             {/* Theme toggle */}
             <button
@@ -316,9 +322,14 @@ export default function HomePage() {   // <— renamed from App to HomePage
                       <h3>{p.title}</h3>
                       <p>{p.blurb}</p>
                       <div className="actions">
-                        <a className="btn btn-accent" href={p.href}>
+                        <button
+                          type="button"
+                          className="btn btn-accent"
+                          onClick={() => navigate(p.path)}
+                          aria-label={`${p.cta} for ${p.title}`}
+                        >
                           {p.cta}
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </article>

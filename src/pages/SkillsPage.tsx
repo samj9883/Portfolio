@@ -1,6 +1,12 @@
 // SkillsPage.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Lottie, { type LottieRefCurrentProps } from "lottie-react";
+
+// Light/Dark animations (using the same file for now; swap the dark import later)
+import animationDataLight from "../assets/light.json";
+// TODO: replace with your dark-mode animation file when ready, e.g. "../assets/data-dark.json"
+import animationDataDark from "../assets/dark.json";
 
 type Theme = "light" | "dark";
 const THEME_KEY = "site-theme";
@@ -18,28 +24,66 @@ const applyTheme = (t: Theme) => {
   } catch {}
 };
 
+// Optional: respect reduced-motion for accessibility
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    setReduced(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return reduced;
+}
+
 export default function SkillsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
-  // Active helper (keeps pill active on child routes too)
-  const isActive = (path: string) =>
-    location.pathname === path || location.pathname.startsWith(path + "/");
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
     applyTheme(theme);
   }, [theme]);
 
+  // Keep nav pill active on child routes too
+  const isActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(path + "/");
+
+  // Keep playback aligned with reduced-motion preference
+  useEffect(() => {
+    const api = lottieRef.current;
+    if (!api) return;
+    if (prefersReduced) api.pause();
+    else api.play();
+  }, [prefersReduced, theme]);
+
+  // Pick animation based on theme (both are the same file for now)
+  const animationData = theme === "dark" ? animationDataDark : animationDataLight;
+
   return (
     <div className="app">
       <header className="app-header">
+        {/* Looping Lottie (no scroll control) */}
+        <section
+          style={{ display: "grid", placeItems: "center" }}
+        >
+          
+          <Lottie
+            key={theme} // remount when theme changes so the correct file loads
+            lottieRef={lottieRef}
+            animationData={animationData}
+            loop={!prefersReduced}
+            autoplay={!prefersReduced}
+            style={{ width: "100%", height: "auto" }}
+          />
+        </section>
+
         <div className="container header-grid">
           <div />
-          <div className="brand">
-            <h1>Skills</h1>
-          </div>
-
           <nav className="subnav">
             <button
               className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
@@ -105,7 +149,7 @@ export default function SkillsPage() {
       </header>
 
       <main className="container" style={{ paddingBlock: "2rem" }}>
-        {/* ... */}
+        {/* Your page content... */}
       </main>
     </div>
   );
