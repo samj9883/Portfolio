@@ -1,0 +1,142 @@
+
+.contact-hero {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+.contact-title {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  margin-bottom: .5rem;
+}
+.contact-tagline {
+  color: var(--c-muted);
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+/* Layout */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 860px) {
+  .contact-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Cards */
+.contact-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.1rem;
+}
+.card-title {
+  font-size: 1.1rem;
+  margin: 0 0 .75rem;
+}
+
+/* Direct links list */
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: .6rem;
+}
+.contact-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .65rem .8rem;
+  border: 1px dashed var(--c-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--c-text);
+  background: transparent;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.contact-link:hover,
+.contact-link:focus-visible {
+  outline: none;
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 30%, transparent);
+}
+
+.icon { width: 1.25rem; display: inline-block; text-align: center; }
+.link-text { font-weight: 600; }
+
+/* Mini copy buttons */
+.mini-btn {
+  border: 1px solid var(--c-border);
+  background: transparent;
+  color: var(--c-text);
+  border-radius: 12px;
+  padding: .45rem .7rem;
+  cursor: pointer;
+  transition: border-color var(--transition), transform var(--transition);
+}
+.mini-btn:hover { border-color: var(--c-accent); transform: translateY(-1px); }
+
+.copied-badge {
+  margin-top: .6rem;
+  font-size: .9rem;
+  color: var(--c-accent);
+}
+
+/* Form */
+.contact-form { display: grid; gap: .9rem; }
+.field { display: grid; gap: .4rem; }
+.field > span { color: var(--c-muted); font-size: .95rem; }
+
+input[type="text"],
+textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--c-border);
+  background: transparent;
+  color: var(--c-text);
+  padding: .75rem .9rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+input[type="text"]::placeholder,
+textarea::placeholder { color: color-mix(in oklab, var(--c-muted) 70%, transparent); }
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 25%, transparent);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+/* Optional helper: primary style for the submit button using your tokens */
+.btn.primary {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  border: 1px solid var(--c-accent);
+}
+.btn.primary:hover { transform: translateY(-1px); }
+.btn.btn-outline {
+  background: transparent;
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+.privacy-hint {
+  color: var(--c-muted);
+  font-size: .9rem;
+}
