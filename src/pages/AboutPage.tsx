@@ -1,6 +1,8 @@
 // AboutPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import AboutCard from "../components/aboutCards";
+import "../styles/about.css";
 
 type Theme = "light" | "dark";
 const THEME_KEY = "site-theme";
@@ -106,7 +108,138 @@ export default function AboutPage() {
 
       <main className="container" style={{ paddingBlock: "2rem" }}>
         {/* ... */}
+
+        <section className="cards">
+          <AboutCard
+            title="EDUCATION"
+            description={
+              <>
+              <br />
+                <p>
+                  I studied <strong>Biology</strong>, <strong>Geography</strong>, and <strong>Economics</strong> at
+                  Hereford Sixth Form, achieving A*, A, and A, respectively. I then took a gap year between completing my
+                  A levels and applying to university.
+                </p>
+
+                <br />
+
+                <p>
+                  During my gap year I worked for my family business, <em>PJ Financial Solutions</em>, an agricultural and
+                  business finance brokerage. I realised economics was not the direction I wanted to pursue and developed a strong
+                  interest in quantitative finance—building algorithmic trading models to forecast currency momentum and analyse
+                  correlations for potential arbitrage opportunities. This led me towards computer science, so I self-studied
+                  AS Level Mathematics to strengthen the necessary foundations.
+                </p>
+
+                <br />
+
+                <p>
+                  While studying AS Mathematics, I applied for <strong>Computer Science with a Foundation Year</strong> at
+                  Loughborough University, a programme designed to reinforce core topics. In summer 2022 I sat AS Mathematics as an
+                  external candidate, achieved an A, and confirmed my place at Loughborough.
+                </p>
+
+                <br />
+
+
+                <p>
+                  The foundation year was a valuable opportunity to accelerate my learning before starting the main course. I
+                  enjoyed the transition to university life especially after a year working and learning from home. Working hard to make the most 
+                  out of this foundation year I earned a scholarship for exceptional academic performance (average &gt; 75%) and was ready to start my full degree in 2023.
+                </p>
+
+                <br />
+
+                <p>
+                  Since then I have continued to achieve strong results while balancing work and extracurricular commitments, and my
+                  average remains on track for a First. I am now in my final year at Loughborough and while working on my end of degree project I am excited 
+                  at the prospect of applying the skills I have developed to the industry.
+                </p>
+
+              </>
+            }
+          />
+
+          <AboutCard
+            title="EXTRACURRICULAR"
+            description={
+              <>
+                <p><strong>Sport</strong></p>
+                <p>
+                  Sport has always been a central part of my life and has shaped who I am.
+                </p>
+
+                <br />
+
+                <p><strong>Golf</strong></p>
+                <p>
+                  Golf was my primary commitment growing up. I represented the
+                  Shropshire &amp; Herefordshire junior county team from age 12 to 18.
+                  Matches followed a Ryder Cup–style format—pairs in the morning and
+                  singles in the afternoon. The commitment taught me teamwork, patience,
+                  and resilience. I still play regularly at university and at home for my clubs mens scratch team; 
+                  it’s a great social outlet, and the sport’s popularity has grown significantly since COVID.
+                </p>
+                <br />
+                <p><strong>Hockey</strong></p>
+                <p>
+                  At Hereford Sixth Form I took up hockey, which wasn’t offered at my
+                  school. I enjoyed moving from an individual sport to a team
+                  environment and joined my local men’s club. With strong coaching
+                  support I progressed and was selected at trials when I moved to
+                  Loughborough. The standard and commitment at
+                  university have been exceptional, and being part of a university team
+                  has been a highlight of my time here.
+                </p>
+                <br />
+
+                <p>
+                  Beyond playing for the mens 2s and being part of the leadership group for the team, 
+                  I’ve contributed as a committee member and coach. I’ve
+                  coached the men’s 5s, women’s 5s, and women’s 4s—roles that involve
+                  planning and running training sessions, selecting matchday squads, and
+                  managing the team on match day. These experiences have strengthened my
+                  leadership, organisation, and people-management skills, and I’ve
+                  loved coaching and playing at Loughborough.
+                </p>
+              </>
+            }
+          />
+
+          <AboutCard
+            title="EXPERIENCE"
+            description={
+              <>
+              <br />
+                <p><strong>Paused Perception — Junior Web Developer (2024–Present)</strong></p>
+                <ul>
+                  <li>Delivered custom-coded Shopify and WordPress components for client projects.</li>
+                  <li>Took end-to-end ownership of live WordPress sites—from requirements capture to delivery.</li>
+                  <li>Collaborated directly with clients to tailor solutions, strengthening UI/UX practice and client communication.</li>
+                </ul>
+                <br />
+          
+                <p><strong>PJ Financial Solutions — Admin &amp; Data Analysis (2022)</strong></p>
+                <ul>
+                  <li>Supported financial consultants with data processing, reporting, and Excel-based analysis.</li>
+                  <li>Built a Python document-scraping tool to extract information from client documents and update databases.</li>
+                </ul>
+                <br />
+
+                <p><strong>Customer Service Roles — Various (Hospitality &amp; Retail) (2019–2022)</strong></p>
+                <ul>
+                  <li>Worked in bar, sales, and customer-facing roles (pubs, golf club).</li>
+                  <li>Developed resilience, teamwork, and clear communication in fast-paced environments.</li>
+                </ul>
+              </>
+            }
+          />
+
+          
+          </section>
+
       </main>
     </div>
   );
 }
+

@@ -1,0 +1,69 @@
+/* AboutCard.module.css */
+.card {
+  border-radius: 12px;
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 20px;
+  overflow: hidden;
+  transition: box-shadow 200ms ease; /* remove width/height transitions */
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-width: 0;              /* allow inner items to shrink properly */
+}
+
+.title {
+  margin: 0;
+  font-size: 1.1rem;
+  overflow: hidden;          /* prevent spill */
+  text-overflow: ellipsis;   /* … when too narrow */
+  white-space: nowrap;
+}
+
+.description {
+  white-space: pre-line; /* turns \n into line breaks */
+}
+
+
+.toggle {
+  appearance: none;
+  border: 1px solid currentColor;
+  background: var(--c-text);
+  border-radius: 999px;
+  padding: .35rem .7rem;
+  cursor: pointer;
+  color: var(--c-bg);
+    flex-shrink: 0;            /* keep the button visible */
+
+}
+
+.panel {
+  height: 0;                
+  overflow: hidden;
+  opacity: 0;
+  transition: height 300ms ease, opacity 200ms ease;
+}
+
+
+
+.open .panel {
+  opacity: 1;
+}
+
+
+/* Accessibility: reduce motion if requested */
+@media (prefers-reduced-motion: reduce) {
+  .panel, .card { transition: none; }
+}
+
+/* span more columns only on larger screens */
+@media (min-width: 450px) {
+  .open.card {
+    grid-column: span 2;   /* take 2 tracks when open */
+  }
+}
