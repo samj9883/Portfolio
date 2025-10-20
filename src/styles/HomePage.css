@@ -130,7 +130,6 @@ html, body { overflow-x: clip; } /* or hidden */
   align-items: flex-start;
   gap: 1rem;
   height: var(--card-h, auto);
-
 }
 
 .carousel .card {
