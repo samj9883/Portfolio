@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../styles/base.css";
 import "../styles/HomePage.css";
 import ScanSafe from "../assets/ScanSafe.png";
@@ -75,14 +75,17 @@ export default function HomePage() {
 
   const autoRef = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === "/home") {
+      return location.pathname === "/" || location.pathname === "/home";
+    }
+    return location.pathname === path;
+  };
 
-  /* Theme management */
+  /* Theme */
   useEffect(() => {
     applyTheme(theme);
     try {
@@ -98,6 +101,7 @@ export default function HomePage() {
       setIndex((i) => (i + 1) % projects.length);
     }, 5500);
     return stopAuto;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hovering]);
   function stopAuto() {
     if (autoRef.current) {
@@ -106,18 +110,18 @@ export default function HomePage() {
     }
   }
 
-  /* Determine left / center / right slide order */
-  const order = useMemo(() => {
+  /* Compute neighbors once per index */
+  const { left, right } = useMemo(() => {
     const left = (index - 1 + projects.length) % projects.length;
     const right = (index + 1) % projects.length;
-    return { left, center: index, right };
+    return { left, right };
   }, [index]);
 
   function select(i: number) {
     setIndex(i);
   }
 
-  /* Keyboard and swipe gestures */
+  /* Keyboard + touch */
   function onKey(e: React.KeyboardEvent) {
     if (e.key === "ArrowRight") setIndex((i) => (i + 1) % projects.length);
     if (e.key === "ArrowLeft") setIndex((i) => (i - 1 + projects.length) % projects.length);
@@ -133,78 +137,6 @@ export default function HomePage() {
     if (dx < -40) setIndex((i) => (i + 1) % projects.length);
     if (dx > 40) setIndex((i) => (i - 1 + projects.length) % projects.length);
   }
-
-  /* Dynamic height measurement (center card only) */
-  useLayoutEffect(() => {
-    const track = trackRef.current;
-    const container = carouselRef.current;
-    if (!track || !container) return;
-
-    let raf = 0;
-    let ro: ResizeObserver | null = null;
-
-    const measure = () => {
-      track.classList.add("is-measuring");
-
-      const centerCard =
-        track.querySelector<HTMLElement>(".card.is-center") ||
-        track.querySelector<HTMLElement>(".card");
-
-      let cardH = 0;
-      let imgH = 0;
-
-      if (centerCard) {
-        cardH = centerCard.scrollHeight;
-        const img = centerCard.querySelector<HTMLImageElement>(".card-visual img");
-        if (img) {
-          imgH = img.getBoundingClientRect().height;
-        }
-      }
-
-      const safeCardH = Math.max(0, Math.round(cardH));
-      const safeImgH = Math.max(0, Math.round(imgH));
-
-      container.style.setProperty("--card-h", `${safeCardH}px`);
-      container.style.setProperty("--img-min-h", `${safeImgH}px`);
-      track.style.setProperty("--card-h", `${safeCardH}px`);
-      track.style.setProperty("--img-min-h", `${safeImgH}px`);
-
-      track.classList.remove("is-measuring");
-    };
-
-    const schedule = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(measure);
-    };
-
-    const observeCenter = () => {
-      if (ro) ro.disconnect();
-      const centerCard =
-        track.querySelector<HTMLElement>(".card.is-center") ||
-        track.querySelector<HTMLElement>(".card");
-      if (centerCard) {
-        ro = new ResizeObserver(schedule);
-        ro.observe(centerCard);
-
-        const img = centerCard.querySelector<HTMLImageElement>(".card-visual img");
-        if (img && !img.complete) {
-          img.addEventListener("load", schedule, { once: true });
-        }
-      }
-    };
-
-    window.addEventListener("resize", schedule);
-    (document as any).fonts?.ready?.then(schedule).catch(() => {});
-
-    observeCenter();
-    schedule();
-
-    return () => {
-      window.removeEventListener("resize", schedule);
-      ro?.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, [index]);
 
   return (
     <div className="app" onKeyDown={onKey} tabIndex={0}>
@@ -225,10 +157,11 @@ export default function HomePage() {
             <h1>FULL STACK DEVELOPMENT</h1>
           </div>
 
-          {/* Navigation */}
+          {/* subnav row */}
           <nav className="subnav">
             <button
               className={`btn nav-pill ${isActive("/home") ? "active" : ""}`}
+              aria-current={isActive("/home") ? "page" : undefined}
               onClick={() => navigate("/home")}
             >
               Home &amp; Portfolio
@@ -236,6 +169,7 @@ export default function HomePage() {
 
             <button
               className={`btn nav-pill ${isActive("/skills") ? "active" : ""}`}
+              aria-current={isActive("/skills") ? "page" : undefined}
               onClick={() => navigate("/skills")}
             >
               Skills &amp; CV
@@ -243,6 +177,7 @@ export default function HomePage() {
 
             <button
               className={`btn nav-pill ${isActive("/about") ? "active" : ""}`}
+              aria-current={isActive("/about") ? "page" : undefined}
               onClick={() => navigate("/about")}
             >
               About Me
@@ -250,6 +185,7 @@ export default function HomePage() {
 
             <button
               className={`btn nav-pill ${isActive("/contact") ? "active" : ""}`}
+              aria-current={isActive("/contact") ? "page" : undefined}
               onClick={() => navigate("/contact")}
             >
               Contact
@@ -260,10 +196,12 @@ export default function HomePage() {
               type="button"
               className="btn nav-pill theme-pill btn-outline"
               aria-label="Toggle light and dark"
+              aria-pressed={theme === "dark"}
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              title="Toggle theme"
             >
               {theme === "light" ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"
                     stroke="currentColor"
@@ -271,7 +209,7 @@ export default function HomePage() {
                   />
                 </svg>
               ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
                   <path
                     d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 6.07-1.41-1.41M8.34 8.34 6.93 6.93m10.14 0-1.41 1.41M8.34 15.66l-1.41 1.41"
@@ -280,29 +218,30 @@ export default function HomePage() {
                   />
                 </svg>
               )}
-              <span style={{ marginLeft: 6 }}>{theme === "light" ? "Dark" : "Light"}</span>
+              <span className="label" style={{ marginLeft: 6 }}>
+                {theme === "light" ? "Dark" : "Light"}
+              </span>
             </button>
           </nav>
         </div>
       </header>
 
-      {/* Carousel */}
+      {/* HERO with carousel */}
       <section className="band">
         <div className="container band-inner">
           <div
             className="carousel"
-            ref={carouselRef}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            <div className="carousel-track" ref={trackRef} role="listbox">
+            <div className="carousel-track" role="listbox" aria-label="Featured projects">
               {projects.map((p, i) => {
                 const state =
-                  i === order.center ? "is-center" :
-                  i === order.left   ? "is-left" :
-                  i === order.right  ? "is-right" : "";
+                  i === index ? "is-center" :
+                  i === left  ? "is-left"   :
+                  i === right ? "is-right"  : "";
 
                 return (
                   <article
@@ -311,20 +250,23 @@ export default function HomePage() {
                     role="option"
                     aria-selected={i === index}
                     onClick={() => select(i)}
+                    aria-label={`${p.title}: ${p.blurb}`}
+                    tabIndex={0}
                   >
                     <div className="card-visual" aria-hidden="true">
                       <img
                         src={p.image}
                         alt={p.title}
-                        loading={i === order.center ? "eager" : "lazy"} // fix for deferred loads
+                        loading="eager"
                         decoding="async"
+                        fetchPriority={i === index ? "high" : "auto"}
                         style={{
-                          height: "100%",
-                          width: "auto",
-                          maxHeight: "100%",
-                          maxWidth: "90%",
+                          width: "90%",
+                          height: "auto",
+                          maxWidth: "520px",
                           objectFit: "contain",
                           display: "block",
+                          margin: "0 auto",
                         }}
                       />
                     </div>
@@ -336,6 +278,7 @@ export default function HomePage() {
                           type="button"
                           className="btn btn-accent"
                           onClick={() => navigate(p.path)}
+                          aria-label={`${p.cta} for ${p.title}`}
                         >
                           {p.cta}
                         </button>
@@ -346,7 +289,7 @@ export default function HomePage() {
               })}
             </div>
 
-            <div className="controls">
+            <div className="controls" aria-label="Project selection">
               {projects.map((_, i) => (
                 <button
                   key={i}
@@ -360,7 +303,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tagline */}
+      {/* Message */}
       <section className="message">
         <p className="tagline">
           Applying for graduate software engineering and tech jobs with skills and experience in client facing development.
