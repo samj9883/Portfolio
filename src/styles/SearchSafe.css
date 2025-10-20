@@ -1,0 +1,11 @@
+/* about.css */
+.content {
+  display: grid;
+  /* raise the min so a column won’t shrink past usable width */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+  grid-auto-flow: dense;
+}
+
+

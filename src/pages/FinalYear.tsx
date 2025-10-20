@@ -28,7 +28,7 @@ const applyTheme = (t: Theme) => {
   } catch {}
 };
 
-export default function SearchSafe() {
+export default function FinalYear() {
   const navigate = useNavigate();
   const location = useLocation();
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
@@ -58,7 +58,7 @@ export default function SearchSafe() {
         <div className="container header-grid">
           <div />
           <div className="brand">
-            <h1>SearchSafe</h1>
+            <h1>Final Year Project</h1>
           </div>
 
           <nav className="subnav">

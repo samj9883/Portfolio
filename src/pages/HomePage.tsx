@@ -15,7 +15,7 @@ type Project = {
   blurb: string;
   image: string;
   cta: string;
-  path: string; // ← was `href`
+  path: string; 
 };
 
 const projects: Project[] = [
@@ -35,7 +35,7 @@ const projects: Project[] = [
       "Client management platform with integrated job scheduling and invoice creation functionality.",
     image: paxDemo,
     cta: "View Platform",
-    path: "/portfolio", // ← was '#portfolio'
+    path: "/pax", 
   },
   {
     id: "pausedPerception",
@@ -44,7 +44,7 @@ const projects: Project[] = [
       "Part time working alongside university for Paused Perception, a web development agency based in Bristol, here are some of my favoroute projects that I have worked on.",
     image: webDev,
     cta: "See Portfolio",
-    path: "/dashboard", // ← was '#dashboard'
+    path: "/web", 
   },
   {
     id: "finalYear",
@@ -53,7 +53,7 @@ const projects: Project[] = [
       "My final year project for my computer science degree at Loughborough. This is an ongoing project that I am working on with the insight of industry professionals",
     image: finalYear,
     cta: "See Project",
-    path: "/dashboard", // ← was '#dashboard'
+    path: "/project", // ← was '#dashboard'
   },
 ];
 

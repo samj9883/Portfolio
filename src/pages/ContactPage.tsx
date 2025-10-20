@@ -26,7 +26,7 @@ export default function ContactPage() {
   const [copied, setCopied] = useState<string | null>(null);
 
   // CV details (from screenshot)
-  const name = "Samuel Jones";
+  //const name = "Samuel Jones";
   const phone = "07496745208";
   const email = "samj9883@gmail.com";
   const linkedin = "https://www.linkedin.com/in/sam-jones-cs26";
