@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Gallery from "../components/gallery";
-import ssSave from "../assets/ssSaved.png";
-import ssSearch from "../assets/ssSearch.png";
-import ssHome from "../assets/SSHome.png";
-import ssPersonal from "../assets/ssPersonal.png";
-import ssProfile from "../assets/ssProfile.png";
+import invoice from "../assets/invoice.png";
+import login from "../assets/login.png";
+import manage from "../assets/manage.png";
+import orders from "../assets/orders.png";
+import timeline from "../assets/timeline.png";
+
 
 
 import "../styles/SearchSafe.css";
@@ -38,12 +39,13 @@ export default function PaxEquest() {
     location.pathname === path || location.pathname.startsWith(path + "/");
 
   const myImages = [
-    { image: ssHome, description: "Home Page" },
-    { image: ssSave, description: "Saved page" },
-    { image: ssSearch, description: "Search Page" },
-    { image: ssProfile, description: "Profile Page" },
-    { image: ssPersonal, description: "Allergen Page" },
-    
+    { image: login, description: "Login page" },
+    { image: manage, description: "Manage Page" },
+    { image: orders, description: "Order Page" },
+    { image: timeline, description: "Timeline Page" },
+
+    { image: invoice, description: "invoice" },
+ 
         
 
   ];
@@ -136,35 +138,71 @@ export default function PaxEquest() {
 
           <section>
             <h2>Introduction</h2>
-             
-            <p>SearchSafe is a barcode search app that uses a personal allergy 
-              profile set by the user to determine whether a product is safe to consume. Making use of 
-              the open food facts api product ingredients, images and descriptions can be returned.</p>
-            <br />
-            <p>This project started off with its first iteration of the concept using react native to produce a 
-              web / mobile friendly application. This first iteration used a different api which allowed the user to search recipes, 
-              a dish name search would return 10 recipes and all recipes would be searched for allergen words. if none of the returned 
-              recipes contained an allergen in the ingredients or desrciption the dish was catagorised as safe.</p>
 
-            <br />
-            <h2>Coursework</h2>
-            <p>When one of my second year university modules set a coursework to 
-              produce an android mobile app I decided to improve on the 
-              first iteration changing the focus to products not meals. The project is 
-              coded in kotlin and uses the openFoodFacts api with firbase to store user and product information.</p>
-            
-            <br />
-            <p>The coursework was a success and the second version of this project was far more effective than the first.
-              The user interface made it simple and quick to build your personal allergen profile (listing all of your allergens)
-              which could be used to cross reference a barcode searched product's ingredients list. The searched products could be stored and shared via sms.
-      
-            </p>
+<p>
+Pax Equestrian Services is a small bridlework and saddlery repair business operated as a sole trader by its founder and owner. 
+As the client base rapidly expanded, the demand for repairs began to exceed manageable capacity, resulting in a growing waitlist 
+and challenges in time management. During the discovery phase, it became clear that a digital client and order management solution 
+was needed to help streamline operations, track orders, and improve efficiency in scheduling and communication.
+</p>
 
-            <br />
+<br />
 
-            <p>In future to further develop the project I would like to explore the concept of creating "safe Recipes", where the user can group 
-              safe searched items to compile a full ingredients list of a recipe that they want to cook and the entire recipe can be concluded to be safe or not.
-            </p>
+<p>
+The primary goal of the project was to design a client management and scheduling platform that would allow the business owner 
+to efficiently organise tasks, monitor client orders, and allocate working hours effectively. To achieve this, a web application 
+was developed using <strong>React Native</strong> for the front end and <strong>Firebase</strong> for the backend and hosting.
+</p>
+
+<br />
+
+<h2>Features</h2>
+
+<p>
+<strong>Client Page:</strong> This section manages client information and stores all associated orders. It includes 
+payment tracking to indicate whether clients have outstanding balances. Completed orders can be automatically 
+populated into a professional invoice template—styled to match the company’s branding—which can be printed or shared 
+directly with the client, saving significant administrative time.
+</p>
+
+<br />
+
+<p>
+<strong>Manage Page:</strong> New clients can be added, and new orders can be created with associated costs 
+and estimated completion times. Once created, these orders automatically appear in the main orders dashboard, 
+ensuring all work remains organised and easily accessible.
+</p>
+
+<br />
+
+<p>
+<strong>Orders Page:</strong> Displays all current orders and allows real-time updates to order status, 
+progress, notes, and any other relevant details. This provides a centralised location to manage ongoing work 
+and track development efficiently.
+</p>
+
+<br />
+
+<p>
+<strong>Timeline Screen:</strong> The most impactful feature of the platform, this screen enables the user 
+to define their standard work schedule (e.g., five days a week, six hours per day) and book any custom days off. 
+Using this information, the system automatically calculates optimal task order, predicts completion dates, and 
+displays warnings for any orders at risk of missing deadlines. This automation removes the manual burden of 
+time management and provides clear visibility into workload distribution and expected completion times.
+</p>
+
+<br />
+
+<h2>Conclusion</h2>
+
+<p>
+After initial familiarisation, the client reported a significant improvement in work–life balance and productivity. 
+The application’s automated scheduling, order tracking, and printable invoice functionality have reduced administrative 
+tasks, improved time management, and enhanced communication with customers. The feedback from the client has been 
+extremely positive—the whiteboard once used for order tracking is now clear, as the application has become the 
+sole method of managing orders and client information.
+</p>
+
 
 
           </section>

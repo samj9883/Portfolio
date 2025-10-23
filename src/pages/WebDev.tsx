@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Gallery from "../components/gallery";
-import ssSave from "../assets/ssSaved.png";
-import ssSearch from "../assets/ssSearch.png";
-import ssHome from "../assets/SSHome.png";
-import ssPersonal from "../assets/ssPersonal.png";
-import ssProfile from "../assets/ssProfile.png";
+import in1Home from "../assets/in1Home.jpeg";
+import in1Load from "../assets/in1Load.png";
+import pjfsHome from "../assets/pjfsHome.png";
+import pjfsPriv from "../assets/pjfsPriv.jpeg";
+import pp from "../assets/pp.jpeg";
+import TPS from "../assets/TPS.jpeg";
 
 
 import "../styles/SearchSafe.css";
@@ -38,11 +39,13 @@ export default function WebDev() {
     location.pathname === path || location.pathname.startsWith(path + "/");
 
   const myImages = [
-    { image: ssHome, description: "Home Page" },
-    { image: ssSave, description: "Saved page" },
-    { image: ssSearch, description: "Search Page" },
-    { image: ssProfile, description: "Profile Page" },
-    { image: ssPersonal, description: "Allergen Page" },
+    { image: pp, description: "Paused Perception" },
+    { image: in1Load, description: "IN1 Load Screen" },
+    { image: in1Home, description: "IN1 Home Screen" },
+    { image: pjfsHome, description: "PJFS" },
+    { image: pjfsPriv, description: "PJFS Privacy and Partners" },
+    { image: TPS, description: "TPS" },
+
     
         
 
@@ -135,36 +138,40 @@ export default function WebDev() {
           </section>
 
           <section>
-            <h2>Introduction</h2>
-             
-            <p>SearchSafe is a barcode search app that uses a personal allergy 
-              profile set by the user to determine whether a product is safe to consume. Making use of 
-              the open food facts api product ingredients, images and descriptions can be returned.</p>
-            <br />
-            <p>This project started off with its first iteration of the concept using react native to produce a 
-              web / mobile friendly application. This first iteration used a different api which allowed the user to search recipes, 
-              a dish name search would return 10 recipes and all recipes would be searched for allergen words. if none of the returned 
-              recipes contained an allergen in the ingredients or desrciption the dish was catagorised as safe.</p>
+            <h2>Paused Perception</h2>
 
-            <br />
-            <h2>Coursework</h2>
-            <p>When one of my second year university modules set a coursework to 
-              produce an android mobile app I decided to improve on the 
-              first iteration changing the focus to products not meals. The project is 
-              coded in kotlin and uses the openFoodFacts api with firbase to store user and product information.</p>
-            
-            <br />
-            <p>The coursework was a success and the second version of this project was far more effective than the first.
-              The user interface made it simple and quick to build your personal allergen profile (listing all of your allergens)
-              which could be used to cross reference a barcode searched product's ingredients list. The searched products could be stored and shared via sms.
-      
-            </p>
+<p>
+Over the past 14 months, I’ve had the opportunity to grow as a Junior Web Developer at the innovative communications agency 
+<a href="https://pausedperception.com/" target="_blank"> Paused Perception</a>. 
+In this role, I’ve been responsible for a diverse range of web development projects — from delivering custom-coded Shopify 
+and WordPress components to taking full ownership of complete WordPress site builds, guiding each project from the initial brief 
+through to launch.
+</p>
 
-            <br />
+<br />
 
-            <p>In future to further develop the project I would like to explore the concept of creating "safe Recipes", where the user can group 
-              safe searched items to compile a full ingredients list of a recipe that they want to cook and the entire recipe can be concluded to be safe or not.
-            </p>
+<p>
+This position has allowed me to strengthen my technical development skills while gaining valuable experience in client communication, 
+project management, and collaborative design. Working closely with designers and clients has deepened my understanding of how thoughtful 
+UI/UX design and clear communication are essential to delivering great digital experiences. 
+</p>
+
+<br />
+
+<p>
+Balancing this role alongside my Computer Science degree at Loughborough University — as well as coaching and playing hockey for the university — 
+has been both challenging and rewarding. These experiences have developed my discipline, time management, and ability to maintain 
+creativity under pressure, all of which have proven invaluable in both professional and academic settings.
+</p>
+
+<br />
+
+<h3>Selected Projects</h3>
+<ul>
+  <li><a href="https://in1.co.uk/" target="_blank">IN1</a></li>
+  <li><a href="https://pjfinancialsolutions.co.uk/" target="_blank">PJ Financial Solutions</a></li>
+  <li><a href="https://techpowerservices.co.uk/" target="_blank">Tech Power Services</a></li>
+</ul>
 
 
           </section>

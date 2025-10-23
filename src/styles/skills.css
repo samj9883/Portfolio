@@ -1,5 +1,6 @@
 /* Skills page styles  - C:\Users\samj9\portfolio\src\styles\skills.css */
 
+/* --- Lottie wrapper --- */
 .lottie-wrap {
   display: grid;
   place-items: center;
@@ -10,12 +11,12 @@
   height: auto;
 }
 
-/* Main container spacing for this page */
+/* --- Main container spacing --- */
 .skills-main {
   padding-block: 2rem;
 }
 
-/* PDF section layout */
+/* --- PDF section layout --- */
 .pdf-section {
   margin: 1rem 0;
 }
@@ -24,42 +25,56 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 1rem;
 }
 
 .pdf-title {
   margin: 0;
 }
 
+.pdf-open-link {
+  text-decoration: underline;
+}
+
 .subnav .subnav-label {
   margin-left: 6px;
 }
 
-/* PDF viewer: responsive height based on screen size.
-   Use dynamic viewport units for mobile correctness (dvh),
-   with sensible min/max via media queries. */
+/* --- PDF viewer (responsive) ---
+   Use dynamic viewport units for mobile (dvh) with fallbacks.
+   iOS/Android browsers often hand off PDF rendering to a native viewer;
+   giving a real height ensures the frame remains visible.
+*/
 .pdf-viewer {
   width: 100%;
-  height: 275vh;   /* fallback */
-  height: 275dvh;  /* mobile-friendly dynamic viewport */
+  height: 80vh;    /* fallback for older browsers */
+  height: 80dvh;   /* mobile-friendly dynamic viewport */
   border: 1px solid #e1e1e1;
   border-radius: 12px;
   margin-top: 0.75rem;
+  background: transparent;
 }
 
-/* Dark theme border */
 html[data-theme="dark"] .pdf-viewer {
   border-color: #333;
 }
 
-/* Smaller screens: give a bit more vertical room */
+/* Fallback guidance text */
+.pdf-fallback {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* --- Small screens: comfortable height --- */
 @media (max-width: 600px) {
   .pdf-viewer {
-    height: 65vh;
-    height: 65dvh;
+    height: 70vh;
+    height: 70dvh;
   }
 }
 
-/* Larger desktops: a bit taller */
+/* --- Larger desktops: a bit taller --- */
 @media (min-width: 1200px) {
   .pdf-viewer {
     height: 85vh;
