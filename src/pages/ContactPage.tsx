@@ -31,7 +31,7 @@ export default function ContactPage() {
   const email = "samj9883@gmail.com";
   const linkedin = "https://www.linkedin.com/in/sam-jones-cs26";
   const github = "https://github.com/samj9883";
-  const portfolio = "https://SamJonesPortfolio.co.uk";
+  const portfolio = "https://samuel-jones-portfolio.co.uk";
 
   // Active helper (keeps pill active on child routes too)
   const isActive = (path: string) =>

@@ -2,11 +2,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Gallery from "../components/gallery";
-import ssSave from "../assets/ssSaved.png";
-import ssSearch from "../assets/ssSearch.png";
-import ssHome from "../assets/SSHome.png";
-import ssPersonal from "../assets/ssPersonal.png";
-import ssProfile from "../assets/ssProfile.png";
+
+import finalYear from "../assets/finalYear.jpeg";
 
 
 import "../styles/SearchSafe.css";
@@ -38,11 +35,8 @@ export default function FinalYear() {
     location.pathname === path || location.pathname.startsWith(path + "/");
 
   const myImages = [
-    { image: ssHome, description: "Home Page" },
-    { image: ssSave, description: "Saved page" },
-    { image: ssSearch, description: "Search Page" },
-    { image: ssProfile, description: "Profile Page" },
-    { image: ssPersonal, description: "Allergen Page" },
+    { image: finalYear, description: "Final Year Project" },
+    
     
         
 
@@ -135,36 +129,111 @@ export default function FinalYear() {
           </section>
 
           <section>
-            <h2>Introduction</h2>
-             
-            <p>SearchSafe is a barcode search app that uses a personal allergy 
-              profile set by the user to determine whether a product is safe to consume. Making use of 
-              the open food facts api product ingredients, images and descriptions can be returned.</p>
-            <br />
-            <p>This project started off with its first iteration of the concept using react native to produce a 
-              web / mobile friendly application. This first iteration used a different api which allowed the user to search recipes, 
-              a dish name search would return 10 recipes and all recipes would be searched for allergen words. if none of the returned 
-              recipes contained an allergen in the ingredients or desrciption the dish was catagorised as safe.</p>
+            <h2>Final Year Project – Asset Finance Document Accuracy Platform</h2>
 
-            <br />
-            <h2>Coursework</h2>
-            <p>When one of my second year university modules set a coursework to 
-              produce an android mobile app I decided to improve on the 
-              first iteration changing the focus to products not meals. The project is 
-              coded in kotlin and uses the openFoodFacts api with firbase to store user and product information.</p>
-            
-            <br />
-            <p>The coursework was a success and the second version of this project was far more effective than the first.
-              The user interface made it simple and quick to build your personal allergen profile (listing all of your allergens)
-              which could be used to cross reference a barcode searched product's ingredients list. The searched products could be stored and shared via sms.
-      
-            </p>
+<p>
+As part of my final year studying <strong>Computer Science (BSc)</strong> at Loughborough University, 
+I am developing a web-based platform that addresses a real-world problem in the <strong>asset finance industry</strong> — 
+the inefficiency and inaccuracy of documentation workflows between brokers and lenders. 
+The project is inspired by first-hand industry experience and consultation with senior professionals 
+from companies including <em>Haydock Finance</em> and <em>Novuna Business Finance</em>.
+</p>
 
-            <br />
+<br />
 
-            <p>In future to further develop the project I would like to explore the concept of creating "safe Recipes", where the user can group 
-              safe searched items to compile a full ingredients list of a recipe that they want to cook and the entire recipe can be concluded to be safe or not.
-            </p>
+<p>
+The <strong>UK asset finance broker market</strong> processes over £8.5 billion annually, 
+yet a significant proportion of deal submissions are delayed or rejected due to documentation errors, 
+inconsistent formatting, and compliance mismatches across multiple lenders. 
+These inaccuracies cause multi-touch processing, delayed payouts, and increased operational costs 
+for brokers, lenders, and customers alike.
+</p>
+
+<br />
+
+<p>
+To tackle this, my project aims to create a <strong>specialised Customer Relationship Management (CRM) 
+and document validation system</strong> designed for small, independent brokerage firms. 
+This system will digitise the process of submitting, reviewing, and tracking finance agreements 
+while automatically analysing patterns of document errors to improve accuracy and efficiency.
+</p>
+
+<br />
+
+<h3>Technical Overview</h3>
+
+<p>
+The platform is being built using <strong>React</strong> for the front-end and <strong>Firebase</strong> for hosting, authentication, 
+and database management. Planned extensions include <strong>AWS IDP</strong> and <strong>n8n/OpenAI</strong> integration 
+to enable intelligent document validation and workflow automation.
+</p>
+
+<br />
+
+<h3>Core Features</h3>
+
+<ul>
+  <li><strong>Application Page:</strong> Brokers can upload finance agreements and deal details directly to lenders. 
+  Each submission is stored in the database and marked with its current status.</li>
+
+  <li><strong>Status Tracking:</strong> The CRM records every application’s state — 
+  <em>Sent, Pending, Declined, or Approved</em> — and logs reasons for rejections 
+  to help identify recurring issues.</li>
+
+  <li><strong>Review Page:</strong> Enables quick editing and re-submission of deals with preloaded data, 
+  improving turnaround time for corrections.</li>
+
+  <li><strong>Client Page:</strong> Displays all clients and their previous finance applications with searchable records, 
+  improving transparency and organisation.</li>
+
+  <li><strong>Analytics Page:</strong> Provides data visualisations and insights on common document errors 
+  and workflow bottlenecks — helping justify future process automation in the industry.</li>
+</ul>
+
+<br />
+
+<h3>Project Context & Goals</h3>
+
+<p>
+This project bridges my interests in <strong>software development, automation, and finance technology</strong>, 
+combining academic research with practical impact. 
+It was inspired by my work experience assisting in database management and automation 
+for a real finance brokerage, where I observed how simple errors and unstructured communication 
+can delay entire funding cycles.
+</p>
+
+<p>
+Through collaboration with industry partners and supervision from <strong>Dr. Yanning Yang</strong>, 
+the goal is to design a scalable, user-friendly system that not only improves efficiency for brokers 
+but also <strong>captures and visualises data patterns</strong> to demonstrate where inefficiencies occur in the 
+deal lifecycle — ultimately supporting the case for broader industry reform.
+</p>
+
+<br />
+
+<h3>Skills & Technologies</h3>
+
+<ul>
+  <li>React, TypeScript, and Firebase (Hosting, Firestore, Authentication)</li>
+  <li>Data visualisation with Chart.js / Recharts</li>
+  <li>RESTful API design and integration</li>
+  <li>Automation and AI experimentation with n8n and OpenAI</li>
+  <li>UI/UX design principles and responsive front-end development</li>
+</ul>
+
+<br />
+
+<h3>Outcome</h3>
+
+<p>
+By the end of the project, I aim to deliver a functional prototype that demonstrates 
+how intelligent document validation and workflow visualisation can drastically improve 
+document accuracy and turnaround times in the asset finance industry. 
+Beyond the technical achievement, this project represents my broader ambition 
+to apply software engineering principles to solve <strong>real-world business inefficiencies</strong> 
+and to contribute to <strong>data-driven innovation</strong> within traditional financial sectors.
+</p>
+
 
 
           </section>
